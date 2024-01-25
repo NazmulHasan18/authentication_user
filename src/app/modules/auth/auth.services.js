@@ -14,11 +14,10 @@ const userLogin = async (data) => {
       throw new Error("Wrong password.You are unauthorized user.");
    }
 
-   const token = await jwt.sign(
+   const token = jwt.sign(
       {
          _id: user._id,
-         email: user.email,
-         name: user.name,
+         role: user.role,
       },
       config.jwt_access_secret,
       { expiresIn: "2h" }

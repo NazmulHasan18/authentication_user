@@ -35,7 +35,7 @@ const createUserIntoDB = async (data) => {
 
 const getAllUserFromDB = async () => {
    try {
-      const result = await User.find();
+      const result = await User.find({ isDeleted: false });
       return result;
    } catch (error) {
       throw new Error(error);
@@ -43,7 +43,7 @@ const getAllUserFromDB = async () => {
 };
 const getUserFromDB = async () => {
    try {
-      const result = await User.find({ role: "user" });
+      const result = await User.find({ role: "user", isDeleted: false });
       return result;
    } catch (error) {
       throw new Error(error);
@@ -51,7 +51,7 @@ const getUserFromDB = async () => {
 };
 const getAdminFromDB = async () => {
    try {
-      const result = await User.find({ role: "admin" });
+      const result = await User.find({ role: "admin", isDeleted: false });
       return result;
    } catch (error) {
       throw new Error(error);

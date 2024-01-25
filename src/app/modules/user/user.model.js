@@ -26,8 +26,11 @@ const userRegistrationSchema = new Schema(
       role: {
          type: String,
          enum: ["admin", "user"],
-
          default: "user",
+      },
+      isDeleted: {
+         type: Boolean,
+         default: false,
       },
    },
    {
