@@ -28,6 +28,7 @@ const registrationValidationSchema = Joi.object({
          "Password must contain a uppercase,lowercase,number, and special characters and length will be 8 to 16."
       )
       .required(),
+   role: Joi.string().valid("user", "admin"),
 });
 
 module.exports = registrationValidationSchema;

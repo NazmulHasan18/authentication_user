@@ -6,16 +6,11 @@ const {
    getAllUserFromDB,
    getUserFromDB,
    getAdminFromDB,
+   getSingleUserFromDB,
+   updateUserIntoDB,
+   deleteUserFromDB,
 } = require("./user.services");
 
-const createAdmin = catchAsync(async (req, res) => {
-   const result = await createAdminIntoDB(req.body);
-
-   sendResponse(res, {
-      message: "Admin created successfully",
-      result: result,
-   });
-});
 const createUser = catchAsync(async (req, res) => {
    const result = await createUserIntoDB(req.body);
 
@@ -24,6 +19,16 @@ const createUser = catchAsync(async (req, res) => {
       result: result,
    });
 });
+
+const getUserOnly = catchAsync(async (req, res) => {
+   const result = await getUserFromDB();
+
+   sendResponse(res, {
+      message: "Users retrieved successfully",
+      result: result,
+   });
+});
+
 const getAllUser = catchAsync(async (req, res) => {
    const result = await getAllUserFromDB();
 
@@ -32,27 +37,36 @@ const getAllUser = catchAsync(async (req, res) => {
       result: result,
    });
 });
-const getUsers = catchAsync(async (req, res) => {
-   const result = await getUserFromDB();
+const getSingleUser = catchAsync(async (req, res) => {
+   const result = await getSingleUserFromDB(req.params.id);
 
    sendResponse(res, {
-      message: "Users retrieved successfully",
+      message: "User retrieved successfully",
       result: result,
    });
 });
-const getAdmins = catchAsync(async (req, res) => {
-   const result = await getAdminFromDB();
+const updateUser = catchAsync(async (req, res) => {
+   const result = await updateUserIntoDB(req.params.id, req.body);
 
    sendResponse(res, {
-      message: "Admin retrieved successfully",
+      message: "User update successfully",
+      result: result,
+   });
+});
+const deleteUser = catchAsync(async (req, res) => {
+   const result = await deleteUserFromDB(req.params.id);
+
+   sendResponse(res, {
+      message: "User Deleted successfully",
       result: result,
    });
 });
 
 module.exports = {
-   createAdmin,
    createUser,
    getAllUser,
-   getUsers,
-   getAdmins,
+   getUserOnly,
+   getSingleUser,
+   updateUser,
+   deleteUser,
 };

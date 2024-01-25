@@ -16,7 +16,10 @@ const authentication = (...requiredRoles) => {
       if (!user) {
          throw new Error("No user found for token.");
       }
-
+      const isDeleted = user.isDeleted;
+      if (isDeleted) {
+         throw new Error("Your account has been deleted.");
+      }
       if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
          throw new Error("You are not authorized!");
       }

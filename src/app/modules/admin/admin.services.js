@@ -1,14 +1,16 @@
-const User = require("./user.model");
+const User = require("../user/user.model");
 
-const createUserIntoDB = async (data) => {
+const createAdminIntoDB = async (data) => {
    try {
       if (data.password !== data.confirm_password) {
          throw new Error("Password Do not matched.");
       }
+      data.role = "admin";
       const isExist = await User.findOne({ email: data.email, username: data.username });
       if (isExist) {
          throw new Error(`${data.username} username or ${data.email} already exists`);
       }
+
       const result = await User.create(data);
       return result;
    } catch (error) {
@@ -16,42 +18,35 @@ const createUserIntoDB = async (data) => {
    }
 };
 
-const getAllUserFromDB = async () => {
+const getAllAdminFromDB = async () => {
    try {
-      const result = await User.find({ isDeleted: false });
+      const result = await User.find({ role: "admin", isDeleted: false });
       return result;
    } catch (error) {
       throw new Error(error);
    }
 };
-const getUserFromDB = async () => {
+
+const getSingleAdminFromDB = async (id) => {
    try {
-      const result = await User.find({ role: "user", isDeleted: false });
+      const result = await User.findOne({ _id: id, role: "admin", isDeleted: false });
       return result;
    } catch (error) {
       throw new Error(error);
    }
 };
-const getSingleUserFromDB = async (id) => {
-   try {
-      const result = await User.findOne({ _id: id, role: "user", isDeleted: false });
-      return result;
-   } catch (error) {
-      throw new Error(error);
-   }
-};
-const updateUserIntoDB = async (id, data) => {
+const updateAdminIntoDB = async (id, data) => {
    try {
       const { name, ...rest } = data;
       console.log(name, rest);
-      let result = await User.findOneAndUpdate({ _id: id, role: "user", isDeleted: false }, rest, {
+      let result = await User.findOneAndUpdate({ _id: id, role: "admin", isDeleted: false }, rest, {
          new: true,
          runValidators: true,
       });
 
       if (name && Object.keys(name).length) {
          result = await User.findOneAndUpdate(
-            { _id: id, role: "user", isDeleted: false },
+            { _id: id, role: "admin", isDeleted: false },
             {
                $set: {
                   "name.first_name": name.first_name,
@@ -64,6 +59,7 @@ const updateUserIntoDB = async (id, data) => {
             }
          );
       }
+
       result.password = "";
 
       return result;
@@ -71,9 +67,10 @@ const updateUserIntoDB = async (id, data) => {
       throw new Error(error);
    }
 };
-const deleteUserFromDB = async (id) => {
+
+const deleteAdminFromDB = async (id) => {
    try {
-      const result = await User.findOneAndUpdate({ _id: id, role: "user" }, { isDeleted: true });
+      const result = await User.findOneAndUpdate({ _id: id, role: "admin" }, { isDeleted: true });
       return null;
    } catch (error) {
       throw new Error(error);
@@ -81,10 +78,9 @@ const deleteUserFromDB = async (id) => {
 };
 
 module.exports = {
-   createUserIntoDB,
-   getAllUserFromDB,
-   getUserFromDB,
-   getSingleUserFromDB,
-   updateUserIntoDB,
-   deleteUserFromDB,
+   createAdminIntoDB,
+   getAllAdminFromDB,
+   getSingleAdminFromDB,
+   updateAdminIntoDB,
+   deleteAdminFromDB,
 };

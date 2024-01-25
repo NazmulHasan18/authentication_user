@@ -1,10 +1,13 @@
 const { Router } = require("express");
 const validateRequest = require("../../middlewares/validateRequest");
-const loginValidator = require("./auth.validate");
-const { signInUser } = require("./auth.controller");
+
+const { signInUser, changePassword } = require("./auth.controller");
+const { loginValidator, changePassValidator } = require("./auth.validate");
+const authentication = require("../../middlewares/authentications");
 
 const router = Router();
 
 router.post("/login", validateRequest(loginValidator), signInUser);
+router.post("/change-password", validateRequest(changePassValidator), authentication(), changePassword);
 
 exports.authRoute = router;
