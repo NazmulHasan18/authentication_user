@@ -3,13 +3,13 @@ const validateRequest = require("../../middlewares/validateRequest");
 const registrationValidationSchema = require("./user.validation");
 const {
    createUser,
-
    getAllUser,
    getUserOnly,
    getSingleUser,
    updateUser,
    deleteUser,
 } = require("./user.controller");
+
 const authentication = require("../../middlewares/authentications");
 
 const router = Router();
